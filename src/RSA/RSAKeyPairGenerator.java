@@ -8,47 +8,80 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.*;
+import java.util.ArrayList;
 import java.util.Base64;
-/**
- *
- * @author Alvaro Sargento
- */
+import java.util.Random;
+
 public class RSAKeyPairGenerator {
-    
-    private PrivateKey privateKey;
-    private PublicKey publicKey;
 
-    public RSAKeyPairGenerator() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(1024);
-        KeyPair pair = keyGen.generateKeyPair();
-        this.privateKey = pair.getPrivate();
-        this.publicKey = pair.getPublic();
+    public static int[] publicKey(int p, int q) throws Exception {
+        if (!ePrimo(p)) {
+            throw new Exception("Numero deve ser primo: " + p);
+        }
+
+        if (!ePrimo(q)) {
+            throw new Exception("Numero deve ser primo: " + q);
+        }
+
+        int phi = (p - 1) * (q - 1);
+        int n = p * q;
+        int e = 0;
+
+        for (int i = 1; i < phi; i++) {
+            if (ePrimo(i) && saoCoprimos(i, phi)) {
+                e = i;
+                break;
+            }
+        }
+
+        return new int[]{e, n};
     }
 
-    public void writeToFile(String path, byte[] key) throws IOException {
-        File f = new File(path);
-        f.getParentFile().mkdirs();
+    public static int[] privateKey(int p, int q) throws Exception {
+        if (!ePrimo(p)) {
+            throw new Exception("Numero deve ser primo: " + p);
+        }
 
-        FileOutputStream fos = new FileOutputStream(f);
-        fos.write(key);
-        fos.flush();
-        fos.close();
+        if (!ePrimo(q)) {
+            throw new Exception("Numero deve ser primo: " + q);
+        }
+
+        int phi = (p - 1) * (q - 1);
+        int n = p * q;
+
+
+        int e = publicKey(p, q)[0];
+        int d = 0;
+        for (int i = 0; i < 1000000000; i++) {
+           if ((i * e) % phi == 1) {
+               d = i;
+               break;
+           }
+        }
+
+        return new int[]{d, n};
     }
 
-    public PrivateKey getPrivateKey() {
-        return privateKey;
+    private static boolean saoCoprimos(int a, int b) throws Exception {
+        return maximoDivisorComum(a, b) == 1;
     }
 
-    public PublicKey getPublicKey() {
-        return publicKey;
+    private static int maximoDivisorComum(int a, int b) throws Exception {
+        if (b == 0) {
+            return a;
+        }
+        return maximoDivisorComum(b, a % b);
     }
-    
-    public static void main(String[] args) throws NoSuchAlgorithmException, IOException {
-        RSAKeyPairGenerator keyPairGenerator = new RSAKeyPairGenerator();
-        keyPairGenerator.writeToFile("RSA/publicKey", keyPairGenerator.getPublicKey().getEncoded());
-        keyPairGenerator.writeToFile("RSA/privateKey", keyPairGenerator.getPrivateKey().getEncoded());
-        System.out.println(Base64.getEncoder().encodeToString(keyPairGenerator.getPublicKey().getEncoded()));
-        System.out.println(Base64.getEncoder().encodeToString(keyPairGenerator.getPrivateKey().getEncoded()));
+
+    private static boolean ePrimo(int number) {
+        if (number <= 1) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

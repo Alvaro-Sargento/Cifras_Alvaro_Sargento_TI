@@ -116,15 +116,4 @@ public class transpLinhaColuna {
       
   
     // metodo main main()
-    public static void main(String[] args)
-    {
-        
-        CifraColunar tc = new CifraColunar();
-  
-        System.out.println("texto simples1 : "+ tc.cifrar("leo Alvaaro"));
-        String a = tc.cifrar("leo Alvaaro");
-        transpLinhaColuna tlc = new transpLinhaColuna();
-        System.out.println("texto simples2 : "+tlc.cifrar(a));
-        
-    }
 }
