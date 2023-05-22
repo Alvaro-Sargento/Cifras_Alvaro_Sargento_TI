@@ -1,21 +1,27 @@
+
 import RSA.RSAKeyPairGenerator;
 import digitalSignuture.DigitalSignuture;
-import digitalSignuture.MD5Hash;
 
 import java.util.Arrays;
 
 public class Hello
 {
     public static void main(String[] args) throws Exception {
-        int[] publicKey = RSAKeyPairGenerator.publicKey(7, 11);
-        int[] privateKey = RSAKeyPairGenerator.privateKey(7, 11);
+        RSAKeyPairGenerator rGenerator = new RSAKeyPairGenerator();
+        DigitalSignuture digitalSignuture =  new DigitalSignuture();
+
+        int[] publicKey = rGenerator.publicKey(11, 17);
+        int[] privateKey = rGenerator.privateKey(11, 17);
 
         System.out.println(Arrays.toString(publicKey));
         System.out.println(Arrays.toString(privateKey));
 
-        String[] msg = DigitalSignuture.encrypt(privateKey, "password");
-        String[] msgs = DigitalSignuture.decrypt(publicKey, msg[0]);
 
-        System.out.println(DigitalSignuture.validacaoHash(msgs));
+        String[] msg = digitalSignuture.encrypt(privateKey, "este e um exemplo");
+        String[] msgs = digitalSignuture.decrypt(publicKey, msg[0]);
+
+        System.out.println(msgs[1]);
+
+        System.out.println(digitalSignuture.validacaoHash(msgs));
     }
 }

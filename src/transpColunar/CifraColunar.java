@@ -15,7 +15,7 @@ import java.util.Set;
  * @author Alvaro Sargento
  */
 public class CifraColunar {
-    public static String encrypt(String key, String message) {
+    public String encrypt(String key, String message) {
         // Verifica se a chave não contém letras repetidas
         Set<Character> uniqueChars = new HashSet<>();
         for (char c : key.toCharArray()) {

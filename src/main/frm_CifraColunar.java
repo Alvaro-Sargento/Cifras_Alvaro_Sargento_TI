@@ -5,6 +5,8 @@
  */
 package main;
 
+import transpColunar.CifraColunar;
+
 /**
  *
  * @author Alvaro Sargento
@@ -80,6 +82,11 @@ public class frm_CifraColunar extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton1.setText("Cifrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -200,6 +207,17 @@ public class frm_CifraColunar extends javax.swing.JFrame {
     private void btnFechar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFechar1ActionPerformed
         this.hide();
     }//GEN-LAST:event_btnFechar1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String key = txtChave.getText();
+        String plainText = txtTextoClaro.getText();
+        
+        System.out.println(key);
+        System.out.println(plainText);
+        CifraColunar cifra = new CifraColunar();
+        String encText1 = cifra.encrypt(key, plainText);
+        txtTextoCifrado.setText(encText1);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

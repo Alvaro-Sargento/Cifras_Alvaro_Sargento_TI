@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import playfair.Playfair;
 
 /**
  *
@@ -390,15 +391,12 @@ public class frm_PlayFair extends javax.swing.JFrame {
     }//GEN-LAST:event_btnFechar1ActionPerformed
 
     private void btnCifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCifrarActionPerformed
-                
+
         String key = txtChave.getText();
         String plainText = txtTextoClaro.getText();
-                
-        frm_PlayFair pfc1 = new frm_PlayFair(key, plainText);
-        pfc1.cleanPlayFairKey();
-        pfc1.generateCipherKey();
         
-        String encText1 = pfc1.encryptMessage();
+        playfair.Playfair p = new Playfair(key);
+        String encText1 = p.encrypt(plainText);
         txtTextoCifrado.setText(encText1);
     }//GEN-LAST:event_btnCifrarActionPerformed
 
