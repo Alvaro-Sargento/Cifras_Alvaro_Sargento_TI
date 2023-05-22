@@ -82,29 +82,39 @@ public class RSAKeyPairGenerator {
     }
 
     private boolean saoCoprimos(int a, int b) throws Exception {
+        // Verifica se o máximo divisor comum entre a e b é igual a 1
         return maximoDivisorComum(a, b) == 1;
     }
 
+
     private int maximoDivisorComum(int a, int b) throws Exception {
         if (b == 0) {
+            // Se o valor de b for igual a 0, retorna o valor de a, que é o máximo divisor comum encontrado
             return a;
         }
 
+        // Caso contrário, chama recursivamente a função maximoDivisorComum passando b como novo valor de a e o resto da divisão a % b como novo valor de b
         return maximoDivisorComum(b, a % b);
+
     }
 
     private boolean ePrimo(int number) {
         if (number <= 1) {
+            // Se o número for menor ou igual a 1, não é primo, portanto retorna falso
             return false;
         }
 
+        // Percorre os valores de 2 até a raiz quadrada do número
         for (int i = 2; i <= Math.sqrt(number); i++) {
+            // Verifica se o número é divisível por algum valor entre 2 e a raiz quadrada do número (inclusive)
             if (number % i == 0) {
+                // Se for divisível, não é primo, portanto retorna falso
                 return false;
             }
         }
 
-
+        // Se não foi encontrado nenhum divisor entre 2 e a raiz quadrada do número, o número é primo, portanto retorna verdadeiro
         return true;
+
     }
 }
